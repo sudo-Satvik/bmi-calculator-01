@@ -26,7 +26,9 @@ const Results = ({ bmi }) => {
         <>
           <h2 className="text-7xl mt-3 font-bold">
             {Math.floor(bmi)}
-            <span className="text-4xl text-gray-300">.{(bmi + "").split(".")[1]}</span>
+            <span className="text-4xl text-gray-300">
+              .{(bmi + "").split(".")[1]}
+            </span>
           </h2>
           <p
             className={`text-sm font-medium px-4 py-1 rounded-md mt-3 w-fit ${indicator.color}`}
@@ -36,7 +38,7 @@ const Results = ({ bmi }) => {
         </>
       ) : (
         <p className="mt-3 text-gray-300">
-          Enter your details to calculate BMI.
+          Enter your Weight and Height to calculate BMI.
         </p>
       )}
     </div>
