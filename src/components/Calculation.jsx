@@ -2,32 +2,39 @@ import Togglebar from "./Togglebar";
 import { useState, useEffect } from "react";
 
 const Calculation = ({ data, setData, dataToggle, setDataToggle }) => {
-  const [imperialInputs, setImperialInputs] = useState({ weight: "", height: "" });
+  const [imperialInputs, setImperialInputs] = useState({
+    weight: "",
+    height: "",
+  });
   const [metricInputs, setMetricInputs] = useState({ weight: "", height: "" });
 
-  const displayWeight = dataToggle ? metricInputs.weight : imperialInputs.weight;
-  const displayHeight = dataToggle ? metricInputs.height : imperialInputs.height;
+  const displayWeight = dataToggle
+    ? metricInputs.weight
+    : imperialInputs.weight;
+  const displayHeight = dataToggle
+    ? metricInputs.height
+    : imperialInputs.height;
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    
+
     if (dataToggle) {
-      setMetricInputs(prev => ({ ...prev, [name]: value }));
-      
-      setData(prev => ({
+      setMetricInputs((prev) => ({ ...prev, [name]: value }));
+
+      setData((prev) => ({
         ...prev,
         weight: name === "weight" ? value : prev.weight,
         height: name === "height" ? value : prev.height,
       }));
     } else {
-      setImperialInputs(prev => ({ ...prev, [name]: value }));
-      
+      setImperialInputs((prev) => ({ ...prev, [name]: value }));
+
       if (name === "weight") {
-        setData(prev => ({
+        setData((prev) => ({
           ...prev,
           weight: (parseFloat(value) / 2.2046).toFixed(2),
         }));
       } else if (name === "height") {
-        setData(prev => ({
+        setData((prev) => ({
           ...prev,
           height: (parseFloat(value) * 2.54).toFixed(2),
         }));
@@ -37,9 +44,9 @@ const Calculation = ({ data, setData, dataToggle, setDataToggle }) => {
 
   useEffect(() => {
     if (dataToggle) {
-      setImperialInputs({ weight: "", height: "" }); 
+      setImperialInputs({ weight: "", height: "" });
     } else {
-      setMetricInputs({ weight: "", height: "" }); 
+      setMetricInputs({ weight: "", height: "" });
     }
   }, [dataToggle]);
 
@@ -54,13 +61,21 @@ const Calculation = ({ data, setData, dataToggle, setDataToggle }) => {
     }
 
     const bmi = (weight / (heightInMeters * heightInMeters)).toFixed(2);
-    setData(prev => ({ ...prev, bmi }));
+    setData((prev) => ({ ...prev, bmi }));
+
+    if (dataToggle) {
+      setMetricInputs({ weight: "", height: "" });
+    } else {
+      setImperialInputs({ weight: "", height: "" });
+    }
   };
 
   return (
     <div className="bg-gray-800 p-8 rounded-lg shadow-md w-full max-w-md max-h-fit md:flex-1 flex-auto">
       <form onSubmit={handleBMIData}>
-        <label htmlFor="weight">Your weight in {dataToggle ? "kg" : "lbs"}:</label>
+        <label htmlFor="weight">
+          Your weight in {dataToggle ? "kg" : "lbs"}:
+        </label>
         <input
           type="number"
           name="weight"
@@ -69,7 +84,9 @@ const Calculation = ({ data, setData, dataToggle, setDataToggle }) => {
           onChange={handleInputChange}
           className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none w-full mb-5 p-2 bg-gray-700 border border-gray-600 rounded focus:outline-none focus:border-blue-500"
         />
-        <label htmlFor="height">Your height in {dataToggle ? "cm" : "inches"}:</label>
+        <label htmlFor="height">
+          Your height in {dataToggle ? "cm" : "inches"}:
+        </label>
         <input
           type="number"
           name="height"
@@ -81,11 +98,19 @@ const Calculation = ({ data, setData, dataToggle, setDataToggle }) => {
         <div className="mt-4">
           <p>Units:</p>
           <div className="flex gap-3 mt-2 items-center">
-            <span className={`text-sm ${dataToggle ? "text-white" : "text-gray-400"}`}>
+            <span
+              className={`text-sm ${
+                dataToggle ? "text-white" : "text-gray-400"
+              }`}
+            >
               Metric (cm, kg)
             </span>
             <Togglebar dataToggle={dataToggle} setDataToggle={setDataToggle} />
-            <span className={`text-sm ${dataToggle ? "text-gray-400" : "text-white"}`}>
+            <span
+              className={`text-sm ${
+                dataToggle ? "text-gray-400" : "text-white"
+              }`}
+            >
               Imperial (inches, lbs)
             </span>
           </div>
